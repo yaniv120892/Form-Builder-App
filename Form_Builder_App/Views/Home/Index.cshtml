@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using Form_Builder_App.Models;
+@model tblUser
+
+
+
+
+<div class="jumbotron">
+    <h1>Form Builder Website</h1>
+    <p class="lead">This site is a platform to build dynamic forms.</p>
+
+    <br />
+    @if (Session["logged_in_user"] == null)
+    {
+           using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+
+                <div class="form-horizontal">
+                    <hr />
+                    <div class="form-group">
+                        @Html.Label("User Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input type="text" name="userName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Password", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input id="password_input" type="password" name="password" required>
+                        </div>
+                        <input type="checkbox" onclick="change_password_visibility()">Show Password
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" style="background-color:cornflowerblue;color:white" value="Login" name="Login_Or_Register" class="btn btn-default" />
+                            <input type="submit" style="background-color:cornflowerblue;color:white" value="Register" name="Login_Or_Register" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+
+            }
+    }
+
+</div>
+

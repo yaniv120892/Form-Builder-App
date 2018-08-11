@@ -1,0 +1,181 @@
+﻿@model Form_Builder_App.Models.tblForm
+
+<style>
+    td {
+    text-align: center;
+    vertical-align: middle;
+}
+        th {
+    text-align: center; 
+    vertical-align: middle; 
+}
+</style>
+
+<div class="form-horizontal">
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Form Name</label>
+        <input id="form_name_input" type="text" placeholder="Enter form name" class="col-md-10" style="width:30%">
+    </div>
+    <br />
+    <a class="btn" onclick="add_field()" style="background-color:cornflowerblue">
+        <i class="fa fa-plus-circle" style="color:white"> Add Field</i>
+    </a>
+    <br />
+    <div class="table-responsive">
+        <table id="table_my_new_form" hidden>
+            <thead>
+                <tr>
+                    <th>Field Name</th>
+                    <th>Input Name</th>
+                    <th>Input Type</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+
+    </div>
+
+    <br />
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <a class="btn btn-default" style="background-color:cornflowerblue" href="@Url.Action("Index", "forms")">
+                <i class="fa fa-arrow-circle-left" style="color:white"> Back</i>
+            </a>
+            <a class="btn btn-default" style="background-color:cornflowerblue" onclick="submit_form()">
+                <i class="fa fa-save" style="color:white"> Save Form</i>
+            </a>
+            <a class="btn btn-default" style="background-color:cornflowerblue" onclick="show_template()">
+                <i class="fa fa-eye" style="color:white"> Preview</i>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function add_field() {
+        var table_my_new_form = document.getElementById('table_my_new_form');
+        table_my_new_form.style.display = "block"
+        var html = '<tr>'
+            +'<td><input type="text" name="fieldLabel" placeholder="Enter field label" required></td>'
+            +'<td><input type="text" name="inputName" placeholder="Enter input name" required></td>'
+            +'<td><select>';
+        var array = @Html.Raw(Json.Encode(@ViewBag.listInputTypes));
+        for (i = 0; i < array.length; i++)
+        {
+            html += '<option value=' + array[i]+'>' + array[i] + '</option>';
+        }
+        html += '</select></td>';
+        html +='<td><input type="checkbox" name="required"></td>'
+
+        html += '<td><button class="btn" onclick="move_field($(this),\'up\')"  style="background-color:cornflowerblue">'
+            +'<i class="fa fa-arrow-circle-up" style="color:white">  </i>'
+            +'</button>';
+        html += '<button class="btn" onclick="move_field($(this),\'down\')" style="background-color:cornflowerblue">'
+            +'<i class="fa fa-arrow-circle-down" style="color:white"> </i>'
+            +'</button>';
+        html += '<button class="btn" onclick="remove_field($(this))" style="background-color:cornflowerblue">'
+            +'<i class="fa fa-trash" style="color:white"> </i>'
+            +'</button></td>';
+        html+= '</tr>';
+
+        table_my_new_form.insertRow(-1).innerHTML = html;
+
+    }
+    function remove_field(row)
+    {
+        row.closest('tr').remove();
+    }
+    function move_field(row,direction)
+    {
+        curr_tr = row.closest('tr')
+        if (direction == "up")
+            curr_tr.insertBefore(curr_tr.prev());
+        else
+            curr_tr.insertAfter(curr_tr.next());
+    }
+    function move_field(row,direction)
+    {
+        curr_tr = row.closest('tr')
+        if (direction == "up")
+            curr_tr.insertBefore(curr_tr.prev());
+        else
+            curr_tr.insertAfter(curr_tr.next());
+    }
+    function submit_form()
+    {
+        var form_name = document.getElementById('form_name_input').value;
+        var arr_form_items = [];
+        var form_table = document.getElementById("table_my_new_form");
+        for (var i = 1, row; row = form_table.rows[i]; i++) {
+            var field_label = row.cells[0].firstChild.value;
+            var input_name = row.cells[1].firstChild.value;
+            var input_type_name = row.cells[2].firstChild[row.cells[2].firstChild.selectedIndex].value;
+            var required = row.cells[3].firstChild.checked ;
+            var Item = {fieldLabel:field_label, inputName : input_name, inputTypeName: input_type_name, required: required };
+            arr_form_items.push(Item);
+        }
+        var form_create = {'formName' : form_name, 'formItems': arr_form_items };
+        $.ajax({
+            url: '@Url.Action("Create", "forms")',
+            dataType: "json",
+            data: JSON.stringify({formCreate:form_create}),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (answer) {
+                if(answer == true)
+                {
+                    alert("The form was added succesfully ");
+                    window.location.href = "Index";
+
+                }
+                else
+                {
+                    alert(@ViewBag.ErrorDetails);
+                }
+
+            },
+            error: function (xhr) {
+                alert(xhr);
+            }
+        });
+
+
+    }
+
+
+
+
+    function show_template()
+    {
+        var form_name = document.getElementById('form_name_input').value;
+        var html='<html><head>'
+        +'<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">'
+        +'<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+        +'<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
+        +'<meta name="viewport" content="width=device-width" /><title>TemplateView</title></head><body><div class="jumbotron">'
+        +'<h4 >     '+form_name+'</h4><hr /><form>';
+        var form_table = document.getElementById("table_my_new_form");
+        for (var i = 1, row; row = form_table.rows[i]; i++) {
+            var field_label = row.cells[0].firstChild.value;
+            var input_name = row.cells[1].firstChild.value;
+            var input_type_name = row.cells[2].firstChild[row.cells[2].firstChild.selectedIndex].value;
+            var required = row.cells[3].firstChild.checked ;
+            html += '<div class="form-group" ><label class="control-label col-md-2" >'+field_label+'</label>'
+                +'<input name="'+input_name+'" type="'+input_type_name+'" class="'+input_type_name+'_class"></div>';
+        }
+        html+='</form><div class="form-group"><div class="col-md-offset-2 col-md-10">'+
+            '<a class="btn btn-default" style="background-color:cornflowerblue"'+
+            'href="#"><i class="fa fa-arrow-circle-left" style="color:white">'+
+            'Back</i></a>'+
+            '<a class="btn btn-default" style="background-color:cornflowerblue">'+
+            '<i class="fa fa-save" style="color:white"> Submit</i>'+
+            '</a>    </div></div></div></body>';
+        var win = window.open("TemplateView", '_blank');
+        win.document.write(html);
+        win.focus();
+    }
+</script>

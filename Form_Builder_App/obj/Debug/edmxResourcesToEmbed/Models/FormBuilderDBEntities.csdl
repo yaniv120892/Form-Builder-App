@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FormBuilderDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblForm">
+    <Key>
+      <PropertyRef Name="formId" />
+    </Key>
+    <Property Name="formId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="formName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tblInputInForms" Relationship="Self.FK__tblInputI__formI__38996AB5" FromRole="tblForms" ToRole="tblInputInForm" />
+  </EntityType>
+  <EntityType Name="tblInputInForm">
+    <Key>
+      <PropertyRef Name="formId" />
+      <PropertyRef Name="positionInForm" />
+    </Key>
+    <Property Name="formId" Type="Int32" Nullable="false" />
+    <Property Name="inputTypeId" Type="Int32" Nullable="false" />
+    <Property Name="positionInForm" Type="Int32" Nullable="false" />
+    <Property Name="fieldLabel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="inputName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tblForm" Relationship="Self.FK__tblInputI__formI__38996AB5" FromRole="tblInputInForm" ToRole="tblForms" />
+    <NavigationProperty Name="tblInputType" Relationship="Self.FK__tblInputI__input__398D8EEE" FromRole="tblInputInForm" ToRole="tblInputTypes" />
+    <NavigationProperty Name="tblUserSubmissions" Relationship="Self.FK__tblUserSubmissio__5CD6CB2B" FromRole="tblInputInForm" ToRole="tblUserSubmissions" />
+  </EntityType>
+  <EntityType Name="tblInputType">
+    <Key>
+      <PropertyRef Name="inputTypeId" />
+    </Key>
+    <Property Name="inputTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="inputTypeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tblInputInForms" Relationship="Self.FK__tblInputI__input__398D8EEE" FromRole="tblInputTypes" ToRole="tblInputInForm" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserSubmission">
+    <Key>
+      <PropertyRef Name="userId" />
+      <PropertyRef Name="formId" />
+      <PropertyRef Name="positionInForm" />
+      <PropertyRef Name="submissionDate" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <Property Name="formId" Type="Int32" Nullable="false" />
+    <Property Name="positionInForm" Type="Int32" Nullable="false" />
+    <Property Name="submissionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="userInput" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblInputInForm" Relationship="Self.FK__tblUserSubmissio__5CD6CB2B" FromRole="tblUserSubmissions" ToRole="tblInputInForm" />
+  </EntityType>
+  <Association Name="FK__tblInputI__formI__38996AB5">
+    <End Role="tblForms" Type="Self.tblForm" Multiplicity="1" />
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblForms">
+        <PropertyRef Name="formId" />
+      </Principal>
+      <Dependent Role="tblInputInForm">
+        <PropertyRef Name="formId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblInputI__input__398D8EEE">
+    <End Role="tblInputTypes" Type="Self.tblInputType" Multiplicity="1" />
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInputTypes">
+        <PropertyRef Name="inputTypeId" />
+      </Principal>
+      <Dependent Role="tblInputInForm">
+        <PropertyRef Name="inputTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblUserSubmissio__5CD6CB2B">
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="1" />
+    <End Role="tblUserSubmissions" Type="Self.tblUserSubmission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInputInForm">
+        <PropertyRef Name="formId" />
+        <PropertyRef Name="positionInForm" />
+      </Principal>
+      <Dependent Role="tblUserSubmissions">
+        <PropertyRef Name="formId" />
+        <PropertyRef Name="positionInForm" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FormBuilderDBEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblForms" EntityType="Self.tblForm" />
+    <EntitySet Name="tblInputInForms" EntityType="Self.tblInputInForm" />
+    <EntitySet Name="tblInputTypes" EntityType="Self.tblInputType" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+    <EntitySet Name="tblUserSubmissions" EntityType="Self.tblUserSubmission" />
+    <AssociationSet Name="FK__tblInputI__formI__38996AB5" Association="Self.FK__tblInputI__formI__38996AB5">
+      <End Role="tblForms" EntitySet="tblForms" />
+      <End Role="tblInputInForm" EntitySet="tblInputInForms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblInputI__input__398D8EEE" Association="Self.FK__tblInputI__input__398D8EEE">
+      <End Role="tblInputTypes" EntitySet="tblInputTypes" />
+      <End Role="tblInputInForm" EntitySet="tblInputInForms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblUserSubmissio__5CD6CB2B" Association="Self.FK__tblUserSubmissio__5CD6CB2B">
+      <End Role="tblInputInForm" EntitySet="tblInputInForms" />
+      <End Role="tblUserSubmissions" EntitySet="tblUserSubmissions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

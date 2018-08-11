@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Form_Builder_App.Models.formDetails>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<p>
+    <a class="btn" style="background-color:cornflowerblue" href="@Url.Action("Create", "forms")">
+        <i class="fa fa-plus-circle" style="color:white"> Add New Form</i>
+    </a>
+</p>
+<table class="table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.formName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numOfSubmissions)
+        </th>
+        <th>Submit Page</th>
+        <th>Submissions Page</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.formName)
+        </td>
+        <td stypeof="text-align: center;vertical-align: middle">
+            @Html.DisplayFor(modelItem => item.numOfSubmissions)
+        </td>
+        <td align="center">
+            <a class="btn" style="background-color:cornflowerblue" href="@Url.Action("SubmitFormPage", "forms", new { formId = item.formID })">
+                <i class="fa fa-clone" style="color:white">View</i>
+            </a>
+        </td>
+        <td align="center">
+            <a class="btn" style="background-color:cornflowerblue" href="@Url.Action("UserSubmissionsPage", "forms", new { formId = item.formID })">
+                <i class="fa fa-clone" style="color:white">View</i>
+            </a>
+        </td>
+    </tr>
+}
+
+</table>

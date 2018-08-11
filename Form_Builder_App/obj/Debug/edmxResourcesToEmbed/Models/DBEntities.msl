@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="formBuilderDBModelStoreContainer" CdmEntityContainer="formBuilderDBEntities1">
+    <EntitySetMapping Name="tblForms">
+      <EntityTypeMapping TypeName="formBuilderDBModel.tblForm">
+        <MappingFragment StoreEntitySet="tblForms">
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="formName" ColumnName="formName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInputInForms">
+      <EntityTypeMapping TypeName="formBuilderDBModel.tblInputInForm">
+        <MappingFragment StoreEntitySet="tblInputInForm">
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="inputTypeName" ColumnName="inputTypeName" />
+          <ScalarProperty Name="positionInForm" ColumnName="positionInForm" />
+          <ScalarProperty Name="fieldLabel" ColumnName="fieldLabel" />
+          <ScalarProperty Name="inputName" ColumnName="inputName" />
+          <ScalarProperty Name="required" ColumnName="required" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUsers">
+      <EntityTypeMapping TypeName="formBuilderDBModel.tblUser">
+        <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserSubmissions">
+      <EntityTypeMapping TypeName="formBuilderDBModel.tblUserSubmission">
+        <MappingFragment StoreEntitySet="tblUserSubmissions">
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="positionInForm" ColumnName="positionInForm" />
+          <ScalarProperty Name="submissionDate" ColumnName="submissionDate" />
+          <ScalarProperty Name="userInput" ColumnName="userInput" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

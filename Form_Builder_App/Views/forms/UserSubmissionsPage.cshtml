@@ -1,0 +1,30 @@
+﻿
+
+<h2>Submission Inputs</h2>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>User ID</th>
+            <th>Submission Date</th>
+            @foreach (string fieldName in ViewBag.listFieldNames)
+            {
+                <th>@fieldName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var key in ViewBag.dicUserInputs.Keys)
+        {
+            <tr>
+                <td>@ViewBag.dicUserNames[key.userID]</td>
+                <td>@key.submissionDate</td>
+                @foreach (var userInput in ViewBag.dicUserInputs[key])
+                {
+                    <td>@userInput</td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+

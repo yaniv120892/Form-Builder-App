@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FormBuilderDBModelStoreContainer" CdmEntityContainer="FormBuilderDBEntities1">
+    <EntitySetMapping Name="tblForms">
+      <EntityTypeMapping TypeName="FormBuilderDBModel.tblForm">
+        <MappingFragment StoreEntitySet="tblForms">
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="formName" ColumnName="formName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInputInForms">
+      <EntityTypeMapping TypeName="FormBuilderDBModel.tblInputInForm">
+        <MappingFragment StoreEntitySet="tblInputInForm">
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="inputTypeId" ColumnName="inputTypeId" />
+          <ScalarProperty Name="positionInForm" ColumnName="positionInForm" />
+          <ScalarProperty Name="fieldLabel" ColumnName="fieldLabel" />
+          <ScalarProperty Name="inputName" ColumnName="inputName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInputTypes">
+      <EntityTypeMapping TypeName="FormBuilderDBModel.tblInputType">
+        <MappingFragment StoreEntitySet="tblInputTypes">
+          <ScalarProperty Name="inputTypeId" ColumnName="inputTypeId" />
+          <ScalarProperty Name="inputTypeName" ColumnName="inputTypeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUsers">
+      <EntityTypeMapping TypeName="FormBuilderDBModel.tblUser">
+        <MappingFragment StoreEntitySet="tblUsers">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserSubmissions">
+      <EntityTypeMapping TypeName="FormBuilderDBModel.tblUserSubmission">
+        <MappingFragment StoreEntitySet="tblUserSubmissions">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="formId" ColumnName="formId" />
+          <ScalarProperty Name="positionInForm" ColumnName="positionInForm" />
+          <ScalarProperty Name="submissionDate" ColumnName="submissionDate" />
+          <ScalarProperty Name="userInput" ColumnName="userInput" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

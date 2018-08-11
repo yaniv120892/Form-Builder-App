@@ -1,0 +1,153 @@
+﻿
+<style>
+    .input .text_class {
+        width: 50%;
+    }
+
+    .input .color_class {
+        width: 50%;
+    }
+
+    .input .date_class {
+        width: 50%;
+    }
+
+    .input .email_class {
+        width: 40%;
+    }
+
+    .input .tel_class {
+        width: 40%;
+    }
+
+    .input .number_class {
+        width: 30%;
+    }
+    .btn fa-submit {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+</style>
+
+
+
+
+<div class="jumbotron">
+
+    <h4>@ViewBag.formName</h4>
+    <hr />
+    <form id="my_form"></form>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <a class="btn btn-default" style="background-color:cornflowerblue" href="@Url.Action("Index", "forms")">
+                <i class="fa fa-arrow-circle-left" style="color:white"> Back</i>
+            </a>
+            <a class="btn btn-default" style="background-color:cornflowerblue" onclick="submit_form()">
+                <i class="fa fa-save" style="color:white"> Submit</i>
+            </a>
+        </div>
+    </div>
+    </div>
+
+
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+    <script>
+        var form_id = @ViewBag.formID;
+        var my_form = document.getElementById('my_form');
+
+        $(document).ready(function()
+        {
+            $.ajax({
+                url: '@Url.Action("GetInputsInForm", "forms")',
+                dataType: "json",
+                data: JSON.stringify({formID: form_id}),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (formDetails) {
+                    var html='<div class="form-horizontal">';
+                    //html +='<h4>'+formDetails["formName"]+'</h4>';
+                    formItems = formDetails
+                    for(var i = 0; i <formItems.length; i++)
+                    {
+                        var field_label = formItems[i].fieldLabel;
+                        var input_name = formItems[i].inputName;
+                        var input_type_name =formItems[i].inputTypeName;
+                        var required =formItems[i].required;
+                        html += '<div class="form-group" ><label class="control-label col-md-2" >'+field_label+'</label>'
+                            +'<input name="'+input_name+'" type="'+input_type_name+'" class="'+input_type_name+'_class"';
+                        if(required==true)
+                        {
+                            html += ' required '
+                        }
+                        html +='></div>';
+                    }
+                    my_form.innerHTML = html+'</div>' +my_form.innerHTML;
+
+                },
+                error: function (xhr) {
+                    alert("function error");
+                    alert(xhr);
+                }
+            });
+
+        });
+
+
+
+
+
+        function submit_form()
+        {
+            console.log("Check validity");
+            var is_valid = my_form.checkValidity()
+            console.log("is valid? "+ is_valid);
+
+            if (is_valid) {
+                var collection_inputs =my_form.getElementsByTagName("input");
+                var arr_user_input = (Array.from(collection_inputs)).map(m=> m.value);
+                $.ajax({
+                    url: '@Url.Action("SubmitFormPage", "forms")',
+                    dataType: "json",
+                    data: JSON.stringify({formID: form_id,arrUserInputs :arr_user_input}),
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (success) {
+                        if(success== true)
+                        {
+                            alert("User submission was saved");
+                            window.location.href = "Index";
+                        }
+                        else
+                        {
+                            alert("User submission was not saved");
+                        }
+                    },
+                    error: function (xhr) {
+                        alert("function error");
+                        alert(xhr);
+                    }
+                });
+            }
+            else
+            {
+                var collection_inputs =Array.from(my_form.getElementsByTagName("input"));
+                for(var i = 0; i <collection_inputs.length; i++)
+                {
+                    collection_inputs[i].style.border = "";
+                }
+                var arr_errors_inputs = collection_inputs.filter(m=> m.validationMessage != "");
+                for(var i = 0; i <arr_errors_inputs.length; i++)
+                {
+                    arr_errors_inputs[i].style = "border: 2px solid red;border-radius: 4px;";
+                    arr_errors_inputs[i].focus();
+                }
+            }
+        }
+
+
+
+
+
+    </script>
+

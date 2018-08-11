@@ -1,0 +1,87 @@
+﻿@using Form_Builder_App.Controllers
+@using Form_Builder_App.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title - Form Builder Tool Website</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-left">
+                <li style="color:white">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @style = "color:white" })</li>
+                <li style="color:white">@Html.ActionLink("Forms", "Index", "forms", new { area = "" }, new { @style = "color:white" })</li>
+
+            </ul>
+            @if (Session["logged_in_user"] != null)
+            {
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn disabled" style="color:white"
+                           href="#">
+                            <i class="fa fa-user-circle">
+                                @{string userName = ((tblUser)Session["logged_in_user"]).userName;}
+                                Hello @userName
+                            </i>
+                        </a>
+
+                    </li>
+                    <li style="color:white">@Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, new { @style = "color:white" })</li>
+
+                </ul>
+
+                                    }
+
+
+
+
+
+        </div>
+    </nav>
+    <div class="container body-content">
+        @if (ViewBag.Error != null)
+            {
+            <div class="alert alert-danger">
+                <strong> @ViewBag.Error </strong>
+            </div>
+        }
+        <br />
+            @RenderBody()
+            <hr />
+
+        
+    </div>
+    <footer style="position:relative;bottom:0">
+        <p>&copy; @DateTime.Now.Year - Form Builder Website</p>
+    </footer>
+</body>
+
+
+
+
+
+
+
+</html>
+
+
+<script>
+                function change_password_visibility() {
+                    var x = document.getElementById("password_input");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+</script>
+

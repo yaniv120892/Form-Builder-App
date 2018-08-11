@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FormBuilderDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblForms">
+    <Key>
+      <PropertyRef Name="formId" />
+    </Key>
+    <Property Name="formId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="formName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInputInForm">
+    <Key>
+      <PropertyRef Name="formId" />
+      <PropertyRef Name="positionInForm" />
+    </Key>
+    <Property Name="formId" Type="int" Nullable="false" />
+    <Property Name="inputTypeId" Type="int" Nullable="false" />
+    <Property Name="positionInForm" Type="int" Nullable="false" />
+    <Property Name="fieldLabel" Type="varchar(max)" Nullable="false" />
+    <Property Name="inputName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInputTypes">
+    <Key>
+      <PropertyRef Name="inputTypeId" />
+    </Key>
+    <Property Name="inputTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inputTypeName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUsers">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserSubmissions">
+    <Key>
+      <PropertyRef Name="userId" />
+      <PropertyRef Name="formId" />
+      <PropertyRef Name="positionInForm" />
+      <PropertyRef Name="submissionDate" />
+    </Key>
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="formId" Type="int" Nullable="false" />
+    <Property Name="positionInForm" Type="int" Nullable="false" />
+    <Property Name="submissionDate" Type="datetime" Nullable="false" />
+    <Property Name="userInput" Type="varchar(max)" />
+  </EntityType>
+  <Association Name="FK__tblInputI__formI__38996AB5">
+    <End Role="tblForms" Type="Self.tblForms" Multiplicity="1" />
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblForms">
+        <PropertyRef Name="formId" />
+      </Principal>
+      <Dependent Role="tblInputInForm">
+        <PropertyRef Name="formId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblInputI__input__398D8EEE">
+    <End Role="tblInputTypes" Type="Self.tblInputTypes" Multiplicity="1" />
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInputTypes">
+        <PropertyRef Name="inputTypeId" />
+      </Principal>
+      <Dependent Role="tblInputInForm">
+        <PropertyRef Name="inputTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblUserSubmissio__5CD6CB2B">
+    <End Role="tblInputInForm" Type="Self.tblInputInForm" Multiplicity="1" />
+    <End Role="tblUserSubmissions" Type="Self.tblUserSubmissions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInputInForm">
+        <PropertyRef Name="formId" />
+        <PropertyRef Name="positionInForm" />
+      </Principal>
+      <Dependent Role="tblUserSubmissions">
+        <PropertyRef Name="formId" />
+        <PropertyRef Name="positionInForm" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FormBuilderDBModelStoreContainer">
+    <EntitySet Name="tblForms" EntityType="Self.tblForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInputInForm" EntityType="Self.tblInputInForm" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInputTypes" EntityType="Self.tblInputTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserSubmissions" EntityType="Self.tblUserSubmissions" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tblInputI__formI__38996AB5" Association="Self.FK__tblInputI__formI__38996AB5">
+      <End Role="tblForms" EntitySet="tblForms" />
+      <End Role="tblInputInForm" EntitySet="tblInputInForm" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblInputI__input__398D8EEE" Association="Self.FK__tblInputI__input__398D8EEE">
+      <End Role="tblInputTypes" EntitySet="tblInputTypes" />
+      <End Role="tblInputInForm" EntitySet="tblInputInForm" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblUserSubmissio__5CD6CB2B" Association="Self.FK__tblUserSubmissio__5CD6CB2B">
+      <End Role="tblInputInForm" EntitySet="tblInputInForm" />
+      <End Role="tblUserSubmissions" EntitySet="tblUserSubmissions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
