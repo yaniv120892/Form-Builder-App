@@ -41,7 +41,7 @@ namespace Form_Builder_App.Models
         public bool HasDuplicateItems()
         {
             var duplicates = formItems
-             .GroupBy(p =>  new { p.fieldLabel, p.inputName })
+             .GroupBy(p =>  new { p.inputName })
              .Where(g => g.Count() > 1)
              .Select(g => g.Key);
 

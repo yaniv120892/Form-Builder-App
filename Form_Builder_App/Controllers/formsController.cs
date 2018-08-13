@@ -42,9 +42,10 @@ namespace Form_Builder_App.Controllers
         [HttpPost]
         public ActionResult Create(formCreateModel formCreate)
         {
+            ViewBag.ErrorDetails = "";
             if (!isValidInput(formCreate))
             {
-                return Json(false);
+                return Json(ViewBag.ErrorDetails);
             }
             string formName = formCreate.formName;
             formItemModel[] arrFormItems = formCreate.formItems;
@@ -56,7 +57,7 @@ namespace Form_Builder_App.Controllers
                 db.tblInputInForms.Add(tblInputInForm);
             }
             db.SaveChanges();
-            return Json(true);
+            return Json("");
         }
 
 
@@ -65,9 +66,14 @@ namespace Form_Builder_App.Controllers
             if (!isFormNameValid(formCreate.formName))
                 return false;
             formItemModel[] formItems = formCreate.formItems;
+            if (formCreate.formItems == null || formCreate.formItems.Count() == 0)
+            {
+                addError("Must add at leat 1 field to form.");
+                return false;
+            }
             if (formCreate.HasDuplicateItems())
             {
-                addError("There are duplicate items in form.");
+                addError("There are duplicate items with the same input name in form.");
                 return false;
             }
             foreach (formItemModel item in formItems)

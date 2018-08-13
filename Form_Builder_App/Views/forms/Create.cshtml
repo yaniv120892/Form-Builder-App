@@ -15,7 +15,7 @@
 
     <div class="form-group">
         <label class="control-label col-md-2">Form Name</label>
-        <input id="form_name_input" type="text" placeholder="Enter form name" class="col-md-10" style="width:30%">
+        <input id="form_name_input" type="text" placeholder="Enter form name" class="col-md-10" style="width:30%" required>
     </div>
     <br />
     <a class="btn" onclick="add_field()" style="background-color:cornflowerblue">
@@ -126,7 +126,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (answer) {
-                if(answer == true)
+                if(answer == "")
                 {
                     alert("The form was added succesfully ");
                     window.location.href = "Index";
@@ -134,7 +134,7 @@
                 }
                 else
                 {
-                    alert(@ViewBag.ErrorDetails);
+                    alert(answer);
                 }
 
             },
